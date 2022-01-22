@@ -5,20 +5,20 @@ A simple yet powerful framework to build serverless applications with a well cur
 
 ## What Can / Cannot Be Automated
 
-The framework will only create "General" Serverless infrastructure, which builds the direct-connection between AWS services, and for the indirect-connections we will need to send a ticket to Ops/DBA to manually create.
+The framework automates "direct-connection" infrastructure — the wiring AWS supports natively between its own services. Anything that reaches outside that boundary is intentionally left to a manual ticket, so that access to sensitive resources always has a human decision behind it.
 
-Examples of `Direct Connections`:
-- AWS API Gateway -> Lambda
+Direct connections (automated):
+- API Gateway -> Lambda
 - Step Function -> Lambda
 - EventBridge -> Lambda
 - EventBridge -> Step Function
 
-Examples of `Indirect Connections`:
-- Anything about S3
-- Anything about DB
+Indirect connections (not automated, requires an Ops/DBA ticket):
+- Anything involving S3
+- Anything involving a database
 - Lambda -> API Gateway
 - Lambda -> Step Function
-- Lambda -> ...
+- Lambda -> other services
 
 
 ## HOW TO RUN
