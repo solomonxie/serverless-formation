@@ -21,34 +21,33 @@ Indirect connections (not automated, requires an Ops/DBA ticket):
 - Lambda -> other services
 
 
-## HOW TO RUN
+## Getting Started
 
-1. Create an application repo
+1. Create an application repository containing your Lambda source code.
+2. Tag the application repository at the commit you want to deploy.
+3. Configure an AWS CLI profile on the deploying machine:
+   ```
+   # ~/.aws/credentials
+   [my-profile-name]
+   region = us-east-1
+   aws_access_key_id = abc
+   aws_secret_access_key = def
+   ```
+4. Set the environment variables listed in `envfile`, either:
+   - `export AWS_REGION=us-east-1 APPLICATION_NAME=abc ...`, or
+   - populate `envfile-local` and run `./scripts/inject_envfile.sh`
+5. Deploy:
+   ```
+   make deploy-all
 
-2. Create a Tag of the application repo
+   # or deploy individual resource types
+   make deploy-lambda
+   make deploy-rest-api
+   make deploy-stepfunc
+   make deploy-event
+   ```
 
-3. Setup AWS account with a profile name on local machine: `~/.aws/credentials`
-```
-[my-profile-name]
-region = us-east-1
-aws_access_key_id = abc
-aws_secret_access_key = def
-```
-
-4. Specify environment variables listed in `envfile`:
-    method-1) `$ export AWS_REGION=us-east-1; export xxx=abc`
-    method-2) Add variables into `envfile-local`, and run `$ ./scripts/inject_envfile.sh`
-
-5. Run deployment:
-```
-$ make deploy
-
-#or
-$ make deploy-lambda
-$ make deploy-rest-api
-$ make deploy-stepfunc
-$ make deploy-schedules
-```
+See `examples/` for complete `template.yaml` definitions covering REST APIs, HTTP APIs, Step Functions, EventBridge schedules, and combinations of all of them.
 
 
 ## Naming Convention
