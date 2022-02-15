@@ -52,12 +52,14 @@ See `examples/` for complete `template.yaml` definitions covering REST APIs, HTT
 
 ## Naming Convention
 
-- Lambda Function Full NAME: "${StageName}-${StageSubName}-${ApplicationName}-${FunctionName}"
-- LAMBDA FUNCTION PATH: "lambda-function/${FunctionFullName}/${BUILD_NO}.zip"
-- Lambda Package Layer NAME: "lambda-layer-${ManifestMd5}"
-- Lambda Package Layer PATH: "lambda-layer/${ManifestMd5_LEVELED_DIR}/{ManifestMd5}.zip"
-- API: "${StageName}-${StageSubName}-${ApplicationName}-${ApiName}"
-- ApiStage: only one -> "latest_release", also points to each Lambda's alias "latest_release"
+- Lambda function full name: `${StageName}-${StageSubName}-${ApplicationName}-${FunctionName}`
+- Lambda function package path: `lambda-function/${FunctionFullName}/${BUILD_NO}.zip`
+- Lambda layer name: `lambda-layer-${ManifestMd5}`
+- Lambda layer package path: `lambda-layer/${ManifestMd5_LEVELED_DIR}/${ManifestMd5}.zip`
+- API name: `${StageName}-${StageSubName}-${ApplicationName}-${ApiName}`
+- API stage: a single stage, `latest_release`, which also points to each Lambda alias `latest_release`
+
+Layer packages are content-addressed by the hash of their dependency manifest, so identical dependency sets are built and uploaded once and reused across functions and applications.
 
 
 ## Staging
