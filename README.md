@@ -64,12 +64,11 @@ Layer packages are content-addressed by the hash of their dependency manifest, s
 
 ## Staging
 
-- StageName=prod: (having production env variables and vpc settings)
-    - StageSubName=main: production release
-    - StageSubName=beta: beta release
-    - StageSubName=prev: previous release for easy rollback & debug
-- StageName=dev: (having dev env variables, developer has R/W permission)
-    - StageSubName=feature1: independent deployment CD for each new feature development
-    - StageSubName=feature2: independent deployment CD for each new feature development
+- `StageName=prod` — production environment variables and VPC settings
+  - `StageSubName=main` — production release
+  - `StageSubName=beta` — beta release
+  - `StageSubName=prev` — previous release, kept for fast rollback
+- `StageName=dev` — development environment variables, developer read/write access
+  - `StageSubName=<feature>` — one independent deployment per feature branch
 
 
