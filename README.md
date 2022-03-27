@@ -72,3 +72,16 @@ Layer packages are content-addressed by the hash of their dependency manifest, s
   - `StageSubName=<feature>` — one independent deployment per feature branch
 
 
+## IAM Policy Model
+
+Every role is created per application/stage and starts with zero permissions. Policy documents live under `iam/` as templates (`iam-policy-*.json`) and are rendered per deployment with the specific resource ARNs involved — nothing is granted by wildcard unless the action itself has no resource-level scoping in AWS (e.g. `logs:CreateLogGroup`).
+
+- A Lambda only gets `logs:*` for its own log group, plus X-Ray permissions if tracing is enabled.
+- A Lambda only gets `states:StartExecution` on a specific state machine if the application actually invokes one.
+- A Step Function execution role only gets `lambda:InvokeFunction` on the functions it actually calls.
+- VPC access, SQS access, and API Gateway execution permissions are all attached conditionally, only when the application declares that dependency in `template.yaml`.
+- The deployment identity itself (the CI/CD role that runs `make deploy`) is scoped by `iam/serverless-admin-least-privilege-policy.json` — it can create and manage the resources this framework owns, and nothing else.
+
+The result: reading an application's IAM role tells you exactly what it touches, and no resource in the account is one stolen credential away from full access.
+
+
