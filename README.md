@@ -85,3 +85,19 @@ Every role is created per application/stage and starts with zero permissions. Po
 The result: reading an application's IAM role tells you exactly what it touches, and no resource in the account is one stolen credential away from full access.
 
 
+## Repository Layout
+
+- `deploy/aws/` — deployment logic per resource type (Lambda, REST API, HTTP API, Step Functions, EventBridge)
+- `deploy/gcp/` — equivalent groundwork for GCP Cloud Functions
+- `iam/` — IAM policy templates, rendered per deployment with resource-specific ARNs
+- `utils/` — shared helpers (IAM, Lambda packaging, API Gateway, Step Functions, SQS, S3, CloudWatch)
+- `scripts/` — operational scripts (env injection, cleanup, diagram generation, manual API invocation)
+- `examples/` — reference `template.yaml` definitions for common application shapes
+- `tests/` — unit tests
+
+See [`FEATURES.md`](FEATURES.md) for the current feature checklist and what's still on the roadmap.
+
+
+## License
+
+GPL-3.0 — see [`LICENSE`](LICENSE).
