@@ -1,6 +1,20 @@
 # Serverless Standard
 
-A simple yet powerful framework to build serverless applications with a well curated standard of best practices.
+An infrastructure-as-code framework for building and deploying AWS serverless applications under a single, enforced company standard. It is not a generic wrapper around CloudFormation or SAM — it exists to make naming, tagging, IAM, and code packaging consistent and predictable across every application, every team, and every environment.
+
+The code in this repo is functional and used for real deployments.
+
+
+## Why This Instead of Another Serverless Framework
+
+Most serverless frameworks let each team decide how to name resources, structure IAM roles, and package code. That flexibility is exactly what makes large organizations hard to manage: inconsistent naming breaks tooling, over-permissioned roles become a security liability, and every app ends up with its own packaging convention.
+
+This framework removes that flexibility on purpose:
+
+- **Naming and tagging are enforced, not suggested.** Every Lambda function, API, role, and policy is derived from a single naming formula (stage, sub-stage, application, resource name). There is no path to deploy a resource that doesn't follow it.
+- **Least-privilege IAM by default.** No admin or wildcard roles. Each role gets only the specific policy statements its resources actually need — a Lambda that never touches Step Functions never receives `states:*`. See [IAM Policy Model](#iam-policy-model) below.
+- **Code packaging is standardized.** Lambda code and dependency layers are built, hashed, and uploaded to S3 using a fixed path/naming scheme, so packages are content-addressed and deployments are reproducible.
+- **Application definitions are declarative.** A single `template.yaml` per application describes its APIs, functions, schedules, and state machines; the framework derives everything else (roles, policies, packaging, deployment order).
 
 
 ## What Can / Cannot Be Automated
