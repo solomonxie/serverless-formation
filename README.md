@@ -1,5 +1,13 @@
 # Serverless Standard
 
+## Versions Used
+
+- AWS SDK for Python: `boto3==1.21.42`, `botocore==1.24.42`
+- AWS CLI: `awscli==1.22.97`
+- Lambda runtime: `python3.8`
+- REST API definitions: Swagger 2.0
+
+
 An infrastructure-as-code framework for building and deploying AWS serverless applications under a single, enforced company standard. It is not a generic wrapper around CloudFormation or SAM — it exists to make naming, tagging, IAM, and code packaging consistent and predictable across every application, every team, and every environment.
 
 The code in this repo is functional and used for real deployments.
