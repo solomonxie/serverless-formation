@@ -5,6 +5,45 @@ An infrastructure-as-code framework for building and deploying AWS serverless ap
 The code in this repo is functional and used for real deployments.
 
 
+## How to Use
+
+Every application is described by a single `template.yaml`. You declare its services and resources; the framework derives the naming, IAM roles/policies, and packaging on its own.
+
+```yaml
+serverless-framework-version: "0.3"
+
+info:
+  title: My Application
+  description: Description in Markdown.
+  version: 1.0.0
+  team: myteam
+
+services:
+  rest-api:
+    type: AWS::ApiGateway::RestApi
+    name: "demo-rest-api"
+    swagger-path: ./definitions/swagger.yaml
+  lambda:
+    handler: application.services.service1.lambda_handlers.handler
+    layers:
+      - type: python-requirements
+        manifest: ./application/services/service1/requirements.txt
+
+resources:
+  lambda:
+    - name: "func-get-status"
+      handler: application.services.service1.lambda_handlers.status_handler
+    - name: "func-get-user"
+      handler: application.services.service2.lambda_handlers.user_handler
+```
+
+- `services` sets the defaults shared by everything in the application (API type, Lambda handler base config, dependency layers).
+- `resources` lists the actual functions, APIs, state machines, and schedules to deploy; each one inherits the `services` defaults and can override them.
+- Run `make deploy-all` (or a resource-specific target, see [Getting Started](#getting-started)) and the framework applies the naming convention, builds and uploads the Lambda package, creates/attaches the least-privilege IAM role, and deploys the resource.
+
+More complete examples — REST API, HTTP API, Step Functions, EventBridge schedules, and combinations of all of them — are in `examples/`.
+
+
 ## Why This Instead of Another Serverless Framework
 
 Most serverless frameworks let each team decide how to name resources, structure IAM roles, and package code. That flexibility is exactly what makes large organizations hard to manage: inconsistent naming breaks tooling, over-permissioned roles become a security liability, and every app ends up with its own packaging convention.
